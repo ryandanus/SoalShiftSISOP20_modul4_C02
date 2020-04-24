@@ -10,6 +10,7 @@
 
 static const char *dirpath = "/home/feinard/Downloads";
 char key[] = "9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M.b%rI'7d)o4~VfZ{#:}ETt$3J-zpc]lnh8,GwP_ND|jO";
+int keyloc = 10;
 
 void encode(char *final, char *input)
 {
@@ -22,7 +23,8 @@ void encode(char *final, char *input)
     char extensi[1000];
 
     while (end > input && *end != '.')
-    {
+    {     
+        if(*end == '.') break;
         extensi[key_index];
         key_index++;
         --end;
@@ -39,7 +41,7 @@ void encode(char *final, char *input)
         {
             if (input[i] == key[key_index])
             {
-                final[i] = key[(key_index + 10) % 88];
+                final[i] = key[(key_index + keyloc) % 88];
                 break;
             }
             key_index++;
@@ -58,6 +60,7 @@ void decode(char *final, char *input)
 
     while (end > input && *end != '.')
     {
+        if(*end == '.') break;
         extensi[key_index];
         key_index++;
         --end;
@@ -74,7 +77,7 @@ void decode(char *final, char *input)
         {
             if (input[i] == key[key_index])
             {
-                final[i] = key[(key_index - 10) % 88];
+                final[i] = key[(key_index - keyloc) % 88];
                 break;
             }
             key_index++;
@@ -82,61 +85,61 @@ void decode(char *final, char *input)
     }
 }
 
-void check(char *final, char *input)
-{
-    char *temp;
-    temp = strtok(input, "/");
-    char *pwd = strrchr(input, ".");
-    while (temp != NULL)
-    {
-        for (int i = 0; i < strlen(temp) - 1; i++)
-        {
-            if (temp[i] == ".")
-            {
-                int flag = 0;
-                int loop = 1;
-                char ext[100];
-                while (i < strlen(temp) - 1)
-                {
-                    if (temp[i] != pwd[loop])
-                    {
-                        flag++;
-                        break;
-                    }
-                    i++;
-                    loop++;
-                }
-                if (flag != 0)
-                {
-                    enc(final, temp);
-                }
-                if (flag == 0)
-                {
-                    char extrm[100];
-                    strcpy(extrm, temp);
+// void check(char *final, char *input)
+// {
+//     char *temp;
+//     temp = strtok(input, "/");
+//     char *pwd = strrchr(input, ".");
+//     while (temp != NULL)
+//     {
+//         for (int i = 0; i < strlen(temp) - 1; i++)
+//         {
+//             if (temp[i] == ".")
+//             {
+//                 int flag = 0;
+//                 int loop = 1;
+//                 char ext[100];
+//                 while (i < strlen(temp) - 1)
+//                 {
+//                     if (temp[i] != pwd[loop])
+//                     {
+//                         flag++;
+//                         break;
+//                     }
+//                     i++;
+//                     loop++;
+//                 }
+//                 if (flag != 0)
+//                 {
+//                     enc(final, temp);
+//                 }
+//                 if (flag == 0)
+//                 {
+//                     char extrm[100];
+//                     strcpy(extrm, temp);
 
-                    char *end = extrm + strlen(extrm);
+//                     char *end = extrm + strlen(extrm);
 
-                    while (end > extrm && *end != '.')
-                    {
-                        --end;
-                    }
+//                     while (end > extrm && *end != '.')
+//                     {
+//                         --end;
+//                     }
 
-                    if (end > extrm)
-                    {
-                        *end = '\0';
-                    }
-                    enc(final, extrm);
-                }
-            }
-            if (i == strlen(temp) - 2 && temp[i] != ".")
-            {
-                enc(final, temp);
-            }
-        }
-        temp = strtok(NULL, "/");
-    }
-}
+//                     if (end > extrm)
+//                     {
+//                         *end = '\0';
+//                     }
+//                     enc(final, extrm);
+//                 }
+//             }
+//             if (i == strlen(temp) - 2 && temp[i] != ".")
+//             {
+//                 enc(final, temp);
+//             }
+//         }
+//         temp = strtok(NULL, "/");
+//     }
+// }
 
 void logDatabase(int warning, char *type, char *path)
 {
@@ -284,7 +287,6 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
 
         sprintf(fpath, "%s%s", dirpath, name);
     }
-    logDatabase(1, "LS", fpath);
     dp = opendir(fpath);
 
     if (dp == NULL)
@@ -304,7 +306,7 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
             break;
     }
     closedir(dp);
-
+    logDatabase(1, "LS", fpath);
     return 0;
 }
 
@@ -354,8 +356,8 @@ static int xmp_mkdir(const char *path, mode_t mode)
     {
         sprintf(fpath, "%s%s", dirpath, path);
     }
+    res = mkdir(fpath, mode);   
     logDatabase(1, "MKDIR", fpath);
-    res = mkdir(fpath, mode);
     if (res == -1)
         return -errno;
 
@@ -376,8 +378,9 @@ static int xmp_unlink(const char *path)
     {
         sprintf(fpath, "%s%s", dirpath, path);
     }
-    logDatabase(0, "RM", fpath);
     res = unlink(fpath);
+    
+    logDatabase(0, "RM", fpath);
     if (res == -1)
         return -errno;
 
@@ -398,9 +401,9 @@ static int xmp_rmdir(const char *path)
     {
         sprintf(fpath, "%s%s", dirpath, path);
     }
-    logDatabase(0, "RMDIR", fpath);
 
     res = rmdir(fpath);
+    logDatabase(0, "RMDIR", fpath);
     if (res == -1)
         return -errno;
 
@@ -430,8 +433,8 @@ static int xmp_rename(const char *from, const char *to)
     {
         sprintf(tpath, "%s%s", dirpath, to);
     }
-    logDatabase2(1, "RENAME", fpath, tpath);
     res = rename(fpath, tpath);
+    logDatabase2(1, "RENAME", fpath, tpath);
     if (res == -1)
         return -errno;
 
@@ -484,8 +487,8 @@ static int xmp_chmod(const char *path, mode_t mode)
         sprintf(fpath, "%s%s", dirpath, path);
     }
 
-    logDatabase(1, "CHMOD", fpath);
     res = chmod(fpath, mode);
+    logDatabase(1, "CHMOD", fpath);
     if (res == -1)
         return -errno;
 
@@ -507,8 +510,8 @@ static int xmp_chown(const char *path, uid_t uid, gid_t gid)
         sprintf(fpath, "%s%s", dirpath, path);
     }
 
-    logDatabase(1, "CHOWM", fpath);
     res = lchown(fpath, uid, gid);
+    logDatabase(1, "CHOWM", fpath);
     if (res == -1)
         return -errno;
 
@@ -569,8 +572,8 @@ static int xmp_open(const char *path, struct fuse_file_info *fi)
     {
         sprintf(fpath, "%s%s", dirpath, path);
     }
-    logDatabase(1, "CAT", fpath);
     res = open(fpath, fi->flags);
+    logDatabase(1, "CAT", fpath);
     if (res == -1)
         return -errno;
 
@@ -595,11 +598,11 @@ static int xmp_write(const char *path, const char *buf, size_t size, off_t offse
     }
     (void)fi;
 
-    logDatabase(1, "WRITE", fpath);
     fd = open(fpath, O_WRONLY);
     if (fd == -1)
         return -errno;
 
+    logDatabase(1, "WRITE", fpath);
     res = pwrite(fd, buf, size, offset);
     if (res == -1)
         res = -errno;
@@ -623,8 +626,8 @@ static int xmp_create(const char *path, mode_t mode, struct fuse_file_info *fi)
     {
         sprintf(fpath, "%s%s", dirpath, path);
     }
-    logDatabase(1, "TOUCH", fpath);
     int res;
+    logDatabase(1, "TOUCH", fpath);
     res = creat(fpath, mode);
     if (res == -1)
         return -errno;
@@ -660,7 +663,7 @@ static int xmp_mknod(const char *ppath, mode_t mode, dev_t rdev)
     else
         sprintf(fpath, "%s%s", dirpath, path);
 
-    // logDatabase(1, "MKNOD", fpath);
+    logDatabase(1, "touch/echo", fpath);
     res = mknod(fpath, mode, rdev);
     if (res == -1)
         return -errno;
