@@ -64,75 +64,12 @@ int keyloc = 10;
 
 void encode(char *final, char *input)
 {
-    if (!strcmp(input, ".") || !strcmp(input, ".."))
-        return;
-
-    int key_index = 0;
-
-    char *end = input + strlen(input);
-    char extensi[1000];
-
-    while (end > input && *end != '.')
-    {     
-        if(*end == '.') break;
-        extensi[key_index];
-        key_index++;
-        --end;
-    }
-
-    if (end > input)
-    {
-        *end = '\0';
-    }
-    key_index = 0;
-    for (int i = 0; i < strlen(input); i++)
-    {
-        while (key_index < 88)
-        {
-            if (input[i] == key[key_index])
-            {
-                final[i] = key[(key_index + keyloc) % 88];
-                break;
-            }
-            key_index++;
-        }
-    }
+   
 }
 
 void decode(char *final, char *input)
 {
-    if (!strcmp(input, ".") || !strcmp(input, ".."))
-        return;
-
-    int key_index = 0;
-    char extensi[1000];
-    char *end = input + strlen(input);
-
-    while (end > input && *end != '.')
-    {
-        if(*end == '.') break;
-        extensi[key_index];
-        key_index++;
-        --end;
-    }
-
-    if (end > input)
-    {
-        *end = '\0';
-    }
-
-    for (int i = 0; i < strlen(input); i++)
-    {
-        while (key_index < 88)
-        {
-            if (input[i] == key[key_index])
-            {
-                final[i] = key[(key_index - keyloc) % 88];
-                break;
-            }
-            key_index++;
-        }
-    }
+    
 }
 
 void check(char *final, char *input)
