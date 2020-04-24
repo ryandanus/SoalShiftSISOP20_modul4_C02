@@ -35,13 +35,14 @@ void encode(char *final, char *input)
     key_index = 0;
     for (int i = 0; i < strlen(input); i++)
     {
-        while (i < 88)
+        while (key_index < 88)
         {
             if (input[i] == key[key_index])
             {
                 final[i] = key[(key_index + 10) % 88];
                 break;
             }
+            key_index++;
         }
     }
 }
@@ -69,13 +70,14 @@ void decode(char *final, char *input)
 
     for (int i = 0; i < strlen(input); i++)
     {
-        while (i < 88)
+        while (key_index < 88)
         {
             if (input[i] == key[key_index])
             {
                 final[i] = key[(key_index - 10) % 88];
                 break;
             }
+            key_index++;
         }
     }
 }
