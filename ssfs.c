@@ -14,132 +14,69 @@ int keyloc = 10;
 
 void encode(char *final, char *input)
 {
-    if (!strcmp(input, ".") || !strcmp(input, ".."))
-        return;
-
-    int key_index = 0;
-
-    char *end = input + strlen(input);
-    char extensi[1000];
-
-    while (end > input && *end != '.')
-    {     
-        if(*end == '.') break;
-        extensi[key_index];
-        key_index++;
-        --end;
-    }
-
-    if (end > input)
-    {
-        *end = '\0';
-    }
-    key_index = 0;
-    for (int i = 0; i < strlen(input); i++)
-    {
-        while (key_index < 88)
-        {
-            if (input[i] == key[key_index])
-            {
-                final[i] = key[(key_index + keyloc) % 88];
-                break;
-            }
-            key_index++;
-        }
-    }
+  
 }
 
 void decode(char *final, char *input)
 {
-    if (!strcmp(input, ".") || !strcmp(input, ".."))
-        return;
-
-    int key_index = 0;
-    char extensi[1000];
-    char *end = input + strlen(input);
-
-    while (end > input && *end != '.')
-    {
-        if(*end == '.') break;
-        extensi[key_index];
-        key_index++;
-        --end;
-    }
-
-    if (end > input)
-    {
-        *end = '\0';
-    }
-
-    for (int i = 0; i < strlen(input); i++)
-    {
-        while (key_index < 88)
-        {
-            if (input[i] == key[key_index])
-            {
-                final[i] = key[(key_index - keyloc) % 88];
-                break;
-            }
-            key_index++;
-        }
-    }
+    
 }
 
-// void check(char *final, char *input)
-// {
-//     char *temp;
-//     temp = strtok(input, "/");
-//     char *pwd = strrchr(input, ".");
-//     while (temp != NULL)
-//     {
-//         for (int i = 0; i < strlen(temp) - 1; i++)
-//         {
-//             if (temp[i] == ".")
-//             {
-//                 int flag = 0;
-//                 int loop = 1;
-//                 char ext[100];
-//                 while (i < strlen(temp) - 1)
-//                 {
-//                     if (temp[i] != pwd[loop])
-//                     {
-//                         flag++;
-//                         break;
-//                     }
-//                     i++;
-//                     loop++;
-//                 }
-//                 if (flag != 0)
-//                 {
-//                     enc(final, temp);
-//                 }
-//                 if (flag == 0)
-//                 {
-//                     char extrm[100];
-//                     strcpy(extrm, temp);
+void check(char *final, char *input)
+{
+    char *temp;
+    temp = strtok(input, "/");
+    char *pwd = strrchr(input, ".");
+    while (temp != NULL)
+    {
+        for (int i = 0; i < strlen(temp) - 1; i++)
+        {
+            if (temp[i] == ".")
+            {
+                int flag = 0;
+                int loop = 1;
+                char ext[100];
+                while (i < strlen(temp) - 1)
+                {
+                    if (temp[i] != pwd[loop])
+                    {
+                        flag++;
+                        break;
+                    }
+                    i++;
+                    loop++;
+                }
+                if (flag != 0)
+                {
+                    enc(final, temp);
+                }
+                if (flag == 0)
+                {
+                    char extrm[100];
+                    strcpy(extrm, temp);
 
-//                     char *end = extrm + strlen(extrm);
+                    char *end = extrm + strlen(extrm);
 
-//                     while (end > extrm && *end != '.')
-//                     {
-//                         --end;
-//                     }
+                    while (end > extrm && *end != '.')
+                    {
+                        --end;
+                    }
 
-//                     if (end > extrm)
-//                     {
-//                         *end = '\0';
-//                     }
-//                     enc(final, extrm);
-//                 }
-//             }
-//             if (i == strlen(temp) - 2 && temp[i] != ".")
-//             {
-//                 enc(final, temp);
-//             }
-//         }
-//         temp = strtok(NULL, "/");
-//     }
-// }
+                    if (end > extrm)
+                    {
+                        *end = '\0';
+                    }
+                    enc(final, extrm);
+                }
+            }
+            if (i == strlen(temp) - 2 && temp[i] != ".")
+            {
+                enc(final, temp);
+            }
+        }
+        temp = strtok(NULL, "/");
+    }
+}
 
 void logDatabase(int warning, char *type, char *path)
 {
