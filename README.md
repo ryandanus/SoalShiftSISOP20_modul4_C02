@@ -160,39 +160,42 @@ void logDatabase2(int warning, char *type, char *path, char *path2)
     return;
 }
 ```
+
 ### penjelasan 
-    Untuk setiap pemanggilan fungsi, dipanggil logDatabase baik yang pertama maupun kedua. Untuk logDatabase1, pertama dilakukan pengecekan warning. Int warning ini berasal dari pemanggilan rm atau rmdir,selain itu warning = 0 . Setelah itu dilakukan pemanggilan time.h dengan localtime
-    ```c
-    time_t now;
-    time(&now);
-    struct tm *local = localtime(&now);
 
-    ```
-    Setelah itu disimpan ddidalam string dan dilakukan sprintf ke variable printloc
-    ```c
-    sprintf(hours, "%02d", (local->tm_hour));
-    sprintf(minutes, "%02d", (local->tm_min));
-    sprintf(seconds, "%02d", (local->tm_sec));
+Untuk setiap pemanggilan fungsi, dipanggil logDatabase baik yang pertama maupun kedua. Untuk logDatabase1, pertama dilakukan pengecekan warning. Int warning ini berasal dari pemanggilan rm atau rmdir,selain itu warning = 0 . Setelah itu dilakukan pemanggilan time.h dengan localtime
 
-    sprintf(day, "%02d", (local->tm_mday) % 32);
-    sprintf(month, "%02d", local->tm_mon + 1);
-    sprintf(year, "%02d", (local->tm_year + 1900) % 100);
+  ```c
+  time_t now;
+  time(&now);
+  struct tm *local = localtime(&now);
 
-    strcat(printLoc, year);
-    strcat(printLoc, month);
-    strcat(printLoc, day);
-    strcat(printLoc, "-");
-    strcat(printLoc, hours);
-    strcat(printLoc, ":");
-    strcat(printLoc, minutes);
-    strcat(printLoc, ":");
-    strcat(printLoc, seconds);
-    strcat(printLoc, "::");
-    strcat(printLoc, type);
-    strcat(printLoc, "::");
-    strcat(printLoc, path);
-    strcat(printLoc, "::");
-    strcat(printLoc, path2);
-    ```
-    Setelah itu
+  ```
+  Setelah itu disimpan ddidalam string dan dilakukan sprintf ke variable printloc
+  ```c
+  sprintf(hours, "%02d", (local->tm_hour));
+  sprintf(minutes, "%02d", (local->tm_min));
+  sprintf(seconds, "%02d", (local->tm_sec));
+
+  sprintf(day, "%02d", (local->tm_mday) % 32);
+  sprintf(month, "%02d", local->tm_mon + 1);
+  sprintf(year, "%02d", (local->tm_year + 1900) % 100);
+
+  strcat(printLoc, year);
+  strcat(printLoc, month);
+  strcat(printLoc, day);
+  strcat(printLoc, "-");
+  strcat(printLoc, hours);
+  strcat(printLoc, ":");
+  strcat(printLoc, minutes);
+  strcat(printLoc, ":");
+  strcat(printLoc, seconds);
+  strcat(printLoc, "::");
+  strcat(printLoc, type);
+  strcat(printLoc, "::");
+  strcat(printLoc, path);
+  strcat(printLoc, "::");
+  strcat(printLoc, path2);
+  ```
+Setelah itu dilakukan pembukaan file dari /home/[user]/fs.log dengan permision a dan dilakukan fprintf printloc dan path yang ada. Untuk logDatabase2 ditambah dengan path kedua
 # Kendala
