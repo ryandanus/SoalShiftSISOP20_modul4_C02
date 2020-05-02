@@ -197,5 +197,13 @@ Untuk setiap pemanggilan fungsi, dipanggil logDatabase baik yang pertama maupun 
   strcat(printLoc, "::");
   strcat(printLoc, path2);
   ```
-Setelah itu dilakukan pembukaan file dari /home/[user]/fs.log dengan permision a dan dilakukan fprintf printloc dan path yang ada. Untuk logDatabase2 ditambah dengan path kedua
+Setelah itu dilakukan pembukaan file dari /home/[user]/fs.log dengan permision a dan dilakukan fprintf printloc dan path yang ada. Untuk logDatabase2 ditambah dengan path kedua.
+Contoh pemanggilan fungsi logDatabase1
+```c
+logDatabase(1, "touch/echo", fpath);
+```
+Contoh pemanggilan fungsi logDatabase2
+```c
+    logDatabase2(1, "RENAME", fpath, tpath);
+```    
 # Kendala
