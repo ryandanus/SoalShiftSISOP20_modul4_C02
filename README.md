@@ -163,7 +163,7 @@ void logDatabase2(int warning, char *type, char *path, char *path2)
 
 ### penjelasan 
 
-Untuk setiap pemanggilan fungsi, dipanggil logDatabase baik yang pertama maupun kedua. Untuk logDatabase1, pertama dilakukan pengecekan warning. Int warning ini berasal dari pemanggilan rm atau rmdir,selain itu warning = 0 . Setelah itu dilakukan pemanggilan time.h dengan localtime
+Untuk setiap pemanggilan fungsi, dipanggil logDatabase baik yang pertama maupun kedua. Untuk logDatabase1, pertama dilakukan pengecekan warning. Int warning ini berasal dari pemanggilan rm atau rmdir,selain itu warning = 0 . Setelah itu dilakukan pemanggilan time.h dengan localtime untuk mengambil waktu yang nantinya disimpan di fs.log 
 
   ```c
   time_t now;
@@ -206,4 +206,11 @@ Contoh pemanggilan fungsi logDatabase2
 ```c
     logDatabase2(1, "RENAME", fpath, tpath);
 ```    
+
+agar keluar sesuai dengan contoh soal
+```
+INFO::200419-18:29:28::MKDIR::/iz1
+INFO::200419-18:29:33::CREAT::/iz1/yena.jpg
+INFO::200419-18:29:33::RENAME::/iz1/yena.jpg::/iz1/yena.jpeg
+```
 # Kendala
