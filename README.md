@@ -6,7 +6,7 @@
 - Ryan Danu Saputra   05111840000144
 
 SOAL 
-  - [Nomor 1](#nomor-4)
+  - [Nomor 1](#nomor-1)
   - [Nomor 4](#nomor-4)
 
 JAWABAN
