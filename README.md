@@ -129,6 +129,44 @@ if (str[i] == key[j])
             }
 ```
 
+Untuk semua pemanggilan lokasi diperlukan pengubahan. Jika ditemukan encv1_ maka diperlukan untuk enkripsi nama sehingga program tidak salah membaca nama file
+```c
+char *checkPath(char *str)
+{
+    bool encr;
+    int start, id;
+    encr = 0;
+    start = 1;
+    id = strchr(str + start, '/') - str - 1;
+    char currentPath[1024];
+    while (id < strlen(str))
+    {
+        strcpy(currentPath, "");
+        strncpy(currentPath, str + start, id - start + 1);
+        currentPath[id - start + 1] = '\0';
+        if (encr)
+        {
+            encrypt(currentPath, 0);
+            strncpy(str + start, currentPath, id - start + 1);
+        }
+        if (!encr && strstr(str + start, "encv1_") == str + start)
+            encr = 1;
+        start = id + 2;
+        id = strchr(str + start, '/') - str - 1;
+    }
+    id = strlen(str);
+    id--;
+    strncpy(currentPath, str + start, id - start + 1);
+    currentPath[id - start + 1] = '\0';
+    if (encr)
+    {
+        encrypt(currentPath, 1);
+        strncpy(str + start, currentPath, id - start + 1);
+    }
+    return str;
+}
+```
+
 lalu terdapat fungsi dibawah ini untuk mengecek di datapath apakah terenkripsi/tidak
 ```
 void loopAllEnc1(char *str, int flag)
