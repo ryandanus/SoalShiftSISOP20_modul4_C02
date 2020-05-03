@@ -200,7 +200,7 @@ void loopAllEnc1(char *str, int flag)
 }
 
 ```
-
+Untuk flag = 1, menandakan bahwa program harus mengenkripsi nama file yang ada. Jika flag = -1, maka program harus melakukan dekripsi. Hal ini terjadi apabila ada pengubahan path menjadi dekripsi/ diluar folder encv1_
 
 
 
